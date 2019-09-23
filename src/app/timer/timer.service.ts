@@ -3,10 +3,19 @@ import {Injectable, NgZone} from '@angular/core';
 @Injectable()
 export class TimerService {
 
-  private _period=0;
+  private _period = 0;
   private intervalId;
 
   constructor(private zone: NgZone) {
+  }
+
+  init(period: number) {
+    this.period = period;
+  }
+
+  initTime(minute: number, second: number) {
+    const period = minute * 6000 + second * 100;
+    this.init(period);
   }
 
   get period(): number {
@@ -24,6 +33,15 @@ export class TimerService {
     // this.intervalId = setInterval(x => {this.increment(); });
   }
 
+  startDecrement() {
+    if (this.period === 0) {
+      return;
+    }
+    this.zone.run((() => this.intervalId = setInterval(() => {
+      this.decrement();
+    }, 10)));
+  }
+
   stop() {
     clearInterval(this.intervalId);
   }
@@ -33,5 +51,6 @@ export class TimerService {
   }
 
   decrement() {
+    this.period--;
   }
 }
