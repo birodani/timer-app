@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {TimerService} from '../timer/timer.service';
 
 @Component({
   selector: 'app-stopper',
   templateUrl: './stopper.component.html',
   styleUrls: ['./stopper.component.css'],
-  providers: [TimerService]
+  providers: [TimerService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StopperComponent implements OnInit {
 
