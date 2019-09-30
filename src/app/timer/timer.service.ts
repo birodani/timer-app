@@ -3,14 +3,16 @@ import {ChangeDetectorRef, Injectable, NgZone, Optional} from '@angular/core';
 @Injectable()
 export class TimerService {
 
-  private _period = 0;
+  private _counter = 0;
+  private _setPoint = 0;
   private intervalId = undefined;
 
   constructor(private zone: NgZone, @Optional() private changeDetectorRef: ChangeDetectorRef) {
   }
 
   init(period: number) {
-    this.period = period;
+    this._counter = period;
+    this._setPoint = period;
   }
 
   initTime(minute: number, second: number) {
@@ -18,12 +20,16 @@ export class TimerService {
     this.init(period);
   }
 
-  get period(): number {
-    return this._period;
+  resetTime() {
+    this.init(this._setPoint);
   }
 
-  set period(periodInMilliSec: number) {
-    this._period = periodInMilliSec;
+  get counter(): number {
+    return this._counter;
+  }
+
+  set counter(periodInMilliSec: number) {
+    this._counter = periodInMilliSec;
   }
 
   start() {
@@ -39,7 +45,7 @@ export class TimerService {
 
   startDecrement() {
     if (this.intervalId !== undefined) { return; }
-    if (this.period === 0) {
+    if (this.counter === 0) {
       return;
     }
     this.zone.runOutsideAngular((() => this.intervalId = setInterval(() => {
@@ -56,12 +62,12 @@ export class TimerService {
   }
 
   increment() {
-    this.period++;
+    this.counter++;
   }
 
   decrement() {
-    this.period--;
-    if (this.period === 0) {
+    this.counter--;
+    if (this.counter === 0) {
       this.stop();
     }
   }
