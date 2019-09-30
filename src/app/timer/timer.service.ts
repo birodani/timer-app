@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {ChangeDetectorRef, Injectable, NgZone, Optional} from '@angular/core';
 
 @Injectable()
 export class TimerService {
@@ -6,7 +6,7 @@ export class TimerService {
   private _period = 0;
   private intervalId = undefined;
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, @Optional() private changeDetectorRef: ChangeDetectorRef) {
   }
 
   init(period: number) {
@@ -30,6 +30,9 @@ export class TimerService {
     if (this.intervalId !== undefined) { return; }
     this.zone.runOutsideAngular((() => this.intervalId = setInterval(() => {
       this.increment();
+      if (this.changeDetectorRef) {
+        this.changeDetectorRef.detectChanges();
+        }
     }, 10)));
     // this.intervalId = setInterval(x => {this.increment(); });
   }
@@ -39,13 +42,17 @@ export class TimerService {
     if (this.period === 0) {
       return;
     }
-    this.zone.run((() => this.intervalId = setInterval(() => {
+    this.zone.runOutsideAngular((() => this.intervalId = setInterval(() => {
       this.decrement();
+      if (this.changeDetectorRef) {
+        this.changeDetectorRef.detectChanges();
+      }
     }, 10)));
   }
 
   stop() {
     clearInterval(this.intervalId);
+    this.intervalId = undefined;
   }
 
   increment() {
