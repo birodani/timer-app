@@ -25,8 +25,8 @@ export class CountdownTimerComponent implements OnInit {
     this.timer.initTime(this.minute, this.second);
   }
 
-  sec = () => this.math.floor(this.timer.period / 100) % 60;
-  min = () => this.math.floor(this.timer.period / 6000);
+  sec = () => this.math.floor(this.timer.counter / 100) % 60;
+  min = () => this.math.floor(this.timer.counter / 6000);
 
   start() {
     this.timer.startDecrement();
@@ -34,5 +34,9 @@ export class CountdownTimerComponent implements OnInit {
 
   stop() {
     this.timer.stop();
+  }
+
+  reset() {
+    this.timer.resetTime();
   }
 }

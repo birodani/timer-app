@@ -18,9 +18,9 @@ export class StopperComponent implements OnInit {
   ngOnInit() {
   }
 
-  millisec = () => this.timer.period % 100;
-  sec = () => this.math.floor(this.timer.period / 100) % 60;
-  minute = () => this.math.floor(this.timer.period / 6000);
+  millisec = () => this.timer.counter % 100;
+  sec = () => this.math.floor(this.timer.counter / 100) % 60;
+  minute = () => this.math.floor(this.timer.counter / 6000);
 
   start() {
     this.timer.start();
@@ -28,6 +28,10 @@ export class StopperComponent implements OnInit {
 
   stop() {
     this.timer.stop();
+  }
+
+  reset() {
+    this.timer.resetTime();
   }
 
 }
